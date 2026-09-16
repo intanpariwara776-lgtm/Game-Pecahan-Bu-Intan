@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petualangan Pecahan Desimal - Kelas 6</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --primary: #4f46e5;
+        --primary-dark: #3730a3;
+        --secondary: #06b6d4;
+        --success: #16a34a;
+        --danger: #dc2626;
+        --warning: #f59e0b;
+        --dark: #1e293b;
+        --muted: #64748b;
+        --light: #f1f5f9;
+        --white: #ffffff;
+        --border: #e2e8f0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #eef2ff, #ecfeff);
+        color: var(--dark);
+        min-height: 100vh;
+    }
+
+    button,
+    input {
+        font-family: inherit;
+    }
+
+    button {
+        cursor: pointer;
+        border: none;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 760px;
+        margin: auto;
+        padding: 16px;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .school-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--primary);
+    }
+
+    .sound-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 1px solid var(--border);
+        font-size: 20px;
+    }
+
+    /* =========================
+       SCREEN
+    ========================= */
+
+    .screen {
+        display: none;
+    }
+
+    .screen.active {
+        display: block;
+    }
+
+    .card {
+        background: var(--white);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    /* =========================
+       HOME
+    ========================= */
+
+    .hero {
+        text-align: center;
+        padding: 28px 20px;
+    }
+
+    .hero-icon {
+        font-size: 76px;
+        margin-bottom: 10px;
+    }
+
+    .hero h1 {
+        font-size: clamp(28px, 7vw, 46px);
+        line-height: 1.1;
+        color: var(--primary-dark);
+        margin-bottom: 12px;
+    }
+
+    .hero h2 {
+        font-size: 17px;
+        color: var(--muted);
+        font-weight: normal;
+        margin-bottom: 24px;
+    }
+
+    .character {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin: 20px 0;
+        font-size: 42px;
+    }
+
+    .home-buttons {
+        display: grid;
+        gap: 12px;
+        max-width: 420px;
+        margin: auto;
+    }
+
+    .btn {
+        min-height: 50px;
+        padding: 13px 20px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn:active {
+        transform: scale(0.97);
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+        background: #e0f2fe;
+        color: #0369a1;
+    }
+
+    .btn-light {
+        background: var(--light);
+        color: var(--dark);
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    /* =========================
+       NAME SCREEN
+    ========================= */
+
+    .center-card {
+        max-width: 520px;
+        margin: 50px auto;
+        text-align: center;
+    }
+
+    .center-card h2 {
+        margin-bottom: 10px;
+        color: var(--primary-dark);
+    }
+
+    .center-card p {
+        color: var(--muted);
+        margin-bottom: 20px;
+    }
+
+    .input {
+        width: 100%;
+        min-height: 52px;
+        border: 2px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-size: 17px;
+        outline: none;
+        margin-bottom: 14px;
+    }
+
+    .input:focus {
+        border-color: var(--primary);
+    }
+
+    /* =========================
+       HOW TO PLAY
+    ========================= */
+
+    .rules-list {
+        display: grid;
+        gap: 12px;
+        margin: 20px 0;
+    }
+
+    .rule {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--light);
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .rule-icon {
+        font-size: 26px;
+    }
+
+    /* =========================
+       LEVEL SELECT
+    ========================= */
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .section-title h2 {
+        color: var(--primary-dark);
+        margin-bottom: 6px;
+    }
+
+    .section-title p {
+        color: var(--muted);
+    }
+
+    .levels {
+        display: grid;
+        gap: 12px;
+    }
+
+    .level {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        background: white;
+        text-align: left;
+    }
+
+    .level.locked {
+        opacity: 0.5;
+    }
+
+    .level-icon {
+        font-size: 32px;
+    }
+
+    .level-info {
+        flex: 1;
+    }
+
+    .level-info h3 {
+        margin-bottom: 4px;
+    }
+
+    .level-info p {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .level-status {
+        font-size: 22px;
+    }
+
+    /* =========================
+       GAME HEADER
+    ========================= */
+
+    .game-header {
+        background: white;
+        border-radius: 18px;
+        padding: 14px;
+        margin-bottom: 14px;
+    }
+
+    .game-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+
+    .stat {
+        background: var(--light);
+        border-radius: 12px;
+        padding: 9px 12px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .timer {
+        color: var(--danger);
+    }
+
+    .progress-container {
+        width: 100%;
+        height: 10px;
+        background: var(--light);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: var(--primary);
+        transition: width 0.3s;
+    }
+
+    /* =========================
+       QUESTION
+    ========================= */
+
+    .question-card {
+        text-align: center;
+    }
+
+    .level-badge {
+        display: inline-block;
+        background: #e0e7ff;
+        color: var(--primary-dark);
+        border-radius: 30px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+
+    .question-number {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .question {
+        font-size: clamp(20px, 5vw, 29px);
+        font-weight: bold;
+        line-height: 1.4;
+        margin-bottom: 22px;
+    }
+
+    .answers {
+        display: grid;
+        gap: 12px;
+    }
+
+    .answer {
+        min-height: 54px;
+        border: 2px solid var(--border);
+        background: white;
+        border-radius: 15px;
+        padding: 13px 15px;
+        font-size: 17px;
+        text-align: left;
+        transition: 0.2s;
+    }
+
+    .answer:hover {
+        border-color: var(--primary);
+        background: #eef2ff;
+    }
+
+    .answer.correct {
+        border-color: var(--success);
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .answer.wrong {
+        border-color: var(--danger);
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .answer:disabled {
+        cursor: default;
+    }
+
+    .feedback {
+        margin-top: 18px;
+        border-radius: 16px;
+        padding: 16px;
+        text-align: left;
+        display: none;
+    }
+
+    .feedback.show {
+        display: block;
+    }
+
+    .feedback.correct {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .feedback.wrong {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .feedback-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .next-area {
+        margin-top: 16px;
+        display: none;
+    }
+
+    .next-area.show {
+        display: block;
+    }
+
+    /* =========================
+       RESULT
+    ========================= */
+
+    .result {
+        text-align: center;
+    }
+
+    .result-icon {
+        font-size: 70px;
+        margin-bottom: 10px;
+    }
+
+    .result h1 {
+        color: var(--primary-dark);
+        margin-bottom: 8px;
+    }
+
+    .result-message {
+        color: var(--muted);
+        margin-bottom: 20px;
+    }
+
+    .score-big {
+        font-size: 46px;
+        font-weight: bold;
+        color: var(--primary);
+        margin: 10px 0 20px;
+    }
+
+    .result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .result-item {
+        background: var(--light);
+        padding: 16px;
+        border-radius: 15px;
+    }
+
+    .result-item strong {
+        display: block;
+        font-size: 23px;
+        margin-bottom: 4px;
+    }
+
+    .result-item span {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    /* =========================
+       REFLECTION
+    ========================= */
+
+    .reflection-options {
+        display: grid;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .reflection {
+        border: 2px solid var(--border);
+        padding: 13px;
+        border-radius: 14px;
+        background: white;
+        text-align: left;
+        font-size: 16px;
+    }
+
+    .reflection.selected {
+        border-color: var(--primary);
+        background: #eef2ff;
+    }
+
+    /* =========================
+       LEARN
+    ========================= */
+
+    .concept {
+        background: var(--light);
+        padding: 16px;
+        border-radius: 15px;
+        margin-bottom: 12px;
+    }
+
+    .concept h3 {
+        margin-bottom: 8px;
+        color: var(--primary-dark);
+    }
+
+    .example {
+        margin-top: 8px;
+        background: white;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+        padding: 20px 0 5px;
+    }
+
+    /* =========================
+       CONFETTI
+    ========================= */
+
+    .confetti {
+        position: fixed;
+        top: -20px;
+        width: 9px;
+        height: 14px;
+        z-index: 9999;
+        animation: fall 1.5s linear forwards;
+        pointer-events: none;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 480px) {
+        .app {
+            padding: 10px;
+        }
+
+        .card {
+            padding: 18px;
+            border-radius: 20px;
+        }
+
+        .hero {
+            padding: 20px 8px;
+        }
+
+        .hero-icon {
+            font-size: 60px;
+        }
+
+        .character {
+            font-size: 34px;
+        }
+
+        .game-top {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .result-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="topbar">
+        <div class="school-name">
+            🏫 SD NEGERI SUMENGKO
+        </div>
+
+        <button class="sound-btn" id="soundBtn" type="button">
+            🔊
+        </button>
+    </div>
+
+    <!-- =========================
+         HOME
+    ========================== -->
+
+    <section id="homeScreen" class="screen active">
+
+        <div class="card hero">
+
+            <div class="hero-icon">🧮</div>
+
+            <h1>
+                Petualangan<br>
+                Pecahan Desimal
+            </h1>
+
+            <h2>
+                Matematika Kelas 6 • Level Sedang
+            </h2>
+
+            <div class="character">
+                <span>👧</span>
+                <span>🤖</span>
+                <span>👦</span>
+            </div>
+
+            <p style="color:#64748b; margin-bottom:20px;">
+                Taklukkan tantangan desimal dan jadilah
+                <strong>Jago Matematika!</strong>
+            </p>
+
+            <div class="home-buttons">
+
+                <button
+                    class="btn btn-primary"
+                    id="startBtn"
+                    type="button">
+                    ▶ MULAI BERMAIN
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    id="learnBtn"
+                    type="button">
+                    📚 BELAJAR DULU
+                </button>
+
+                <button
+                    class="btn btn-light"
+                    id="howBtn"
+                    type="button">
+                    📖 CARA BERMAIN
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         NAME
+    ========================== -->
+
+    <section id="nameScreen" class="screen">
+
+        <div class="card center-card">
+
+            <div style="font-size:60px;">👋</div>
+
+            <h2>Siapa Nama Kamu?</h2>
+
+            <p>
+                Masukkan namamu sebelum memulai petualangan.
+            </p>
+
+            <input
+                id="playerName"
+                class="input"
+                type="text"
+                maxlength="30"
+                placeholder="Contoh: Andi">
+
+            <button
+                id="continueNameBtn"
+                class="btn btn-primary"
+                style="width:100%;"
+                type="button">
+                🚀 LANJUT
+            </button>
+
+            <button
+                id="backHomeBtn"
+                class="btn btn-light"
+                style="width:100%; margin-top:10px;"
+                type="button">
+                ← Kembali
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         HOW TO PLAY
+    ========================== -->
+
+    <section id="howScreen" class="screen">
+
+        <div class="card">
+
+            <div class="section-title">
+                <h2>📖 Cara Bermain</h2>
+                <p>Ikuti langkah berikut.</p>
+            </div>
+
+            <div class="rules-list">
+
+                <div class="rule">
+                    <div class="rule-icon">1️⃣</div>
+                    <div>Pilih jawaban yang menurutmu benar.</div>
+                </div>
+
+                <div class="rule">
+                    <div class="rule-icon">⏱️</div>
+                    <div>Jawab setiap soal sebelum waktu habis.</div>
+                </div>
+
+                <div class="rule">
+                    <div class="rule-icon">⭐</div>
+                    <div>Jawaban benar mendapatkan 100 poin.</div>
+                </div>
+
+                <div class="rule">
+                    <div class="rule-icon">❤️</div>
+                    <div>Kamu memiliki 3 nyawa.</div>
+                </div>
+
+                <div class="rule">
+                    <div class="rule-icon">🔥</div>
+                    <div>Jawab 3 soal berturut-turut dengan benar untuk bonus.</div>
+                </div>
+
+                <div class="rule">
+                    <div class="rule-icon">🏆</div>
+                    <div>Selesaikan semua level dan capai skor terbaikmu.</div>
+                </div>
+
+            </div>
+
+            <button
+                id="backFromHowBtn"
+                class="btn btn-primary"
+                style="width:100%;"
+                type="button">
+                ← Kembali
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         LEARN
+    ========================== -->
+
+    <section id="learnScreen" class="screen">
+
+        <div class="card">
+
+            <div class="section-title">
+                <h2>📚 Belajar Pecahan Desimal</h2>
+                <p>Pelajari konsepnya sebelum bermain.</p>
+            </div>
+
+            <div class="concept">
+                <h3>1. Apa itu pecahan desimal?</h3>
+                <p>
+                    Pecahan desimal adalah bilangan yang menggunakan
+                    tanda koma untuk menunjukkan bagian dari satu kesatuan.
+                </p>
+
+                <div class="example">
+                    0,5 = lima persepuluh
+                </div>
+            </div>
+
+            <div class="concept">
+                <h3>2. Nilai Tempat</h3>
+
+                <p>
+                    Pada bilangan 3,48:
+                </p>
+
+                <div class="example">
+                    3 , 4 8
+                </div>
+
+                <p style="margin-top:10px;">
+                    3 = satuan<br>
+                    4 = persepuluhan<br>
+                    8 = perseratusan
+                </p>
+            </div>
+
+            <div class="concept">
+                <h3>3. Membandingkan Desimal</h3>
+
+                <p>
+                    Bandingkan angka dari kiri ke kanan.
+                </p>
+
+                <div class="example">
+                    0,75 &gt; 0,57
+                </div>
+            </div>
+
+            <div class="concept">
+                <h3>4. Penjumlahan Desimal</h3>
+
+                <p>
+                    Sejajarkan tanda koma terlebih dahulu.
+                </p>
+
+                <div class="example">
+                    2,75 + 1,25 = 4,00
+                </div>
+            </div>
+
+            <div class="concept">
+                <h3>5. Pengurangan Desimal</h3>
+
+                <div class="example">
+                    5,50 − 2,25 = 3,25
+                </div>
+            </div>
+
+            <button
+                id="backFromLearnBtn"
+                class="btn btn-primary"
+                style="width:100%; margin-top:10px;"
+                type="button">
+                ← Kembali
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         LEVEL SELECT
+    ========================== -->
+
+    <section id="levelScreen" class="screen">
+
+        <div class="card">
+
+            <div class="section-title">
+                <h2>🗺️ Pilih Level</h2>
+                <p>
+                    Hai <strong id="welcomeName"></strong>,
+                    selesaikan tantangannya!
+                </p>
+            </div>
+
+            <div class="levels">
+
+                <button
+                    class="level"
+                    data-level="1"
+                    type="button">
+
+                    <div class="level-icon">🟢</div>
+
+                    <div class="level-info">
+                        <h3>Level 1 — Kenali Desimal</h3>
+                        <p>Membaca desimal & nilai tempat</p>
+                    </div>
+
+                    <div class="level-status">🔓</div>
+                </button>
+
+                <button
+                    class="level locked"
+                    data-level="2"
+                    type="button">
+
+                    <div class="level-icon">🔵</div>
+
+                    <div class="level-info">
+                        <h3>Level 2 — Bandingkan!</h3>
+                        <p>Membandingkan bilangan desimal</p>
+                    </div>
+
+                    <div class="level-status">🔒</div>
+                </button>
+
+                <button
+                    class="level locked"
+                    data-level="3"
+                    type="button">
+
+                    <div class="level-icon">🟡</div>
+
+                    <div class="level-info">
+                        <h3>Level 3 — Susun & Hitung</h3>
+                        <p>Urutan, penjumlahan & pengurangan</p>
+                    </div>
+
+                    <div class="level-status">🔒</div>
+                </button>
+
+                <button
+                    class="level locked"
+                    data-level="4"
+                    type="button">
+
+                    <div class="level-icon">🟠</div>
+
+                    <div class="level-info">
+                        <h3>Level 4 — Tantangan Desimal</h3>
+                        <p>Perkalian, pembagian & soal cerita</p>
+                    </div>
+
+                    <div class="level-status">🔒</div>
+                </button>
+
+                <button
+                    class="level locked"
+                    data-level="5"
+                    type="button">
+
+                    <div class="level-icon">🔴</div>
+
+                    <div class="level-info">
+                        <h3>Level 5 — Misi Akhir</h3>
+                        <p>Tantangan campuran</p>
+                    </div>
+
+                    <div class="level-status">🔒</div>
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         GAME
+    ========================== -->
+
+    <section id="gameScreen" class="screen">
+
+        <div class="game-header">
+
+            <div class="game-top">
+
+                <div class="stat">
+                    ❤️ <span id="lives">3</span>
+                </div>
+
+                <div class="stat">
+                    ⭐ <span id="score">0</span>
+                </div>
+
+                <div class="stat">
+                    🔥 <span id="streak">0</span>
+                </div>
+
+                <div class="stat timer">
+                    ⏱️ <span id="timer">30</span>s
+                </div>
+
+            </div>
+
+            <div class="progress-container">
+                <div
+                    id="progressBar"
+                    class="progress-bar">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card question-card">
+
+            <div
+                id="levelBadge"
+                class="level-badge">
+                LEVEL 1
+            </div>
+
+            <div
+                id="questionNumber"
+                class="question-number">
+                Soal 1 dari 5
+            </div>
+
+            <div
+                id="question"
+                class="question">
+                Memuat soal...
+            </div>
+
+            <div
+                id="answers"
+                class="answers">
+            </div>
+
+            <div
+                id="feedback"
+                class="feedback">
+
+                <div
+                    id="feedbackTitle"
+                    class="feedback-title">
+                </div>
+
+                <div
+                    id="feedbackText">
+                </div>
+
+            </div>
+
+            <div
+                id="nextArea"
+                class="next-area">
+
+                <button
+                    id="nextBtn"
+                    class="btn btn-primary"
+                    style="width:100%;"
+                    type="button">
+                    LANJUT →
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         RESULT
+    ========================== -->
+
+    <section id="resultScreen" class="screen">
+
+        <div class="card result">
+
+            <div class="result-icon">🏆</div>
+
+            <h1>Misi Selesai!</h1>
+
+            <p class="result-message">
+                Hebat! Kamu sudah menyelesaikan tantangan.
+            </p>
+
+            <div id="finalScore" class="score-big">
+                0
+            </div>
+
+            <div class="result-grid">
+
+                <div class="result-item">
+                    <strong id="correctResult">0</strong>
+                    <span>Jawaban Benar</span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="accuracyResult">0%</strong>
+                    <span>Akurasi</span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="levelResult">1</strong>
+                    <span>Level</span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="playerResult">-</strong>
+                    <span>Pemain</span>
+                </div>
+
+            </div>
+
+            <p
+                id="resultMessage"
+                style="margin-bottom:20px;">
+            </p>
+
+            <button
+                id="reflectionBtn"
+                class="btn btn-secondary"
+                style="width:100%;"
+                type="button">
+                📝 REFLEKSI
+            </button>
+
+            <button
+                id="levelsAgainBtn"
+                class="btn btn-primary"
+                style="width:100%; margin-top:10px;"
+                type="button">
+                🗺️ PILIH LEVEL
+            </button>
+
+            <button
+                id="homeAgainBtn"
+                class="btn btn-light"
+                style="width:100%; margin-top:10px;"
+                type="button">
+                🏠 BERANDA
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         REFLECTION
+    ========================== -->
+
+    <section id="reflectionScreen" class="screen">
+
+        <div class="card">
+
+            <div class="section-title">
+                <h2>📝 Refleksi Saya</h2>
+                <p>
+                    Bagaimana pengalaman belajarmu?
+                </p>
+            </div>
+
+            <h3 style="margin-bottom:10px;">
+                Saya sudah bisa...
+            </h3>
+
+            <div class="reflection-options">
+
+                <button class="reflection" type="button">
+                    ☑ Membaca bilangan desimal
+                </button>
+
+                <button class="reflection" type="button">
+                    ☑ Menentukan nilai tempat
+                </button>
+
+                <button class="reflection" type="button">
+                    ☑ Membandingkan bilangan desimal
+                </button>
+
+                <button class="reflection" type="button">
+                    ☑ Mengurutkan bilangan desimal
+                </button>
+
+                <button class="reflection" type="button">
+                    ☑ Menjumlahkan dan mengurangkan desimal
+                </button>
+
+                <button class="reflection" type="button">
+                    ☑ Menyelesaikan soal cerita
+                </button>
+
+            </div>
+
+            <h3 style="margin-top:20px;">
+                Bagian ini terasa...
+            </h3>
+
+            <div class="reflection-options">
+
+                <button class="reflection" type="button">
+                    😊 Mudah
+                </button>
+
+                <button class="reflection" type="button">
+                    🙂 Cukup mudah
+                </button>
+
+                <button class="reflection" type="button">
+                    😐 Masih perlu latihan
+                </button>
+
+                <button class="reflection" type="button">
+                    💪 Saya ingin mencoba lagi
+                </button>
+
+            </div>
+
+            <button
+                id="reflectionDoneBtn"
+                class="btn btn-primary"
+                style="width:100%;"
+                type="button">
+                ✅ SELESAI
+            </button>
+
+        </div>
+
+    </section>
+
+    <div class="footer">
+        Matematika Kelas 6 • Bab 1 Pecahan Desimal<br>
+        Game Edukasi SD Negeri Sumengko
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+   DATA GAME
+========================================================= */
+
+const questionBank = {
+
+    1: [
+        {
+            q: "Bilangan 0,75 dibaca...",
+            options: [
+                "nol koma tujuh lima",
+                "tujuh koma lima",
+                "nol tujuh puluh lima",
+                "tujuh puluh lima koma nol"
+            ],
+            answer: 0,
+            explanation:
+                "0,75 dibaca nol koma tujuh lima."
+        },
+
+        {
+            q: "Pada bilangan 3,48, angka 4 menempati nilai tempat...",
+            options: [
+                "satuan",
+                "persepuluhan",
+                "perseratusan",
+                "puluhan"
+            ],
+            answer: 1,
+            explanation:
+                "Angka pertama setelah koma adalah persepuluhan. Jadi angka 4 menempati tempat persepuluhan."
+        },
+
+        {
+            q: "Pecahan 5/10 jika ditulis dalam bentuk desimal adalah...",
+            options: [
+                "0,05",
+                "0,5",
+                "5,0",
+                "0,15"
+            ],
+            answer: 1,
+            explanation:
+                "5/10 = 0,5."
+        },
+
+        {
+            q: "Manakah bilangan yang memiliki angka 7 pada tempat perseratusan?",
+            options: [
+                "2,70",
+                "2,07",
+                "7,20",
+                "0,72"
+            ],
+            answer: 1,
+            explanation:
+                "Pada 2,07, angka 7 berada pada tempat perseratusan."
+        },
+
+        {
+            q: "Bentuk desimal dari 25/100 adalah...",
+            options: [
+                "0,025",
+                "0,25",
+                "2,5",
+                "25,0"
+            ],
+            answer: 1,
+            explanation:
+                "25/100 = 0,25."
+        }
+    ],
+
+    2: [
+        {
+            q: "Lengkapi: 0,65 ___ 0,56",
+            options: [">", "<", "=", "≠"],
+            answer: 0,
+            explanation:
+                "0,65 lebih besar daripada 0,56 karena 6 persepuluhan lebih besar daripada 5 persepuluhan."
+        },
+
+        {
+            q: "Manakah yang lebih kecil?",
+            options: [
+                "0,82",
+                "0,28",
+                "0,72",
+                "0,92"
+            ],
+            answer: 1,
+            explanation:
+                "0,28 adalah bilangan paling kecil."
+        },
+
+        {
+            q: "Lengkapi: 1,25 ___ 1,25",
+            options: [">", "<", "=", "≠"],
+            answer: 2,
+            explanation:
+                "Kedua bilangan sama, sehingga menggunakan tanda =."
+        },
+
+        {
+            q: "Bilangan terbesar adalah...",
+            options: [
+                "2,05",
+                "2,50",
+                "2,15",
+                "2,05"
+            ],
+            answer: 1,
+            explanation:
+                "2,50 lebih besar daripada 2,15 dan 2,05."
+        },
+
+        {
+            q: "Manakah perbandingan yang benar?",
+            options: [
+                "0,45 > 0,54",
+                "0,72 < 0,27",
+                "0,80 > 0,75",
+                "0,35 = 0,53"
+            ],
+            answer: 2,
+            explanation:
+                "0,80 lebih besar daripada 0,75."
+        }
+    ],
+
+    3: [
+        {
+            q: "Urutan dari terkecil ke terbesar adalah...",
+            options: [
+                "0,8 ; 0,5 ; 0,3",
+                "0,3 ; 0,5 ; 0,8",
+                "0,5 ; 0,3 ; 0,8",
+                "0,8 ; 0,3 ; 0,5"
+            ],
+            answer: 1,
+            explanation:
+                "Urutan yang benar dari terkecil adalah 0,3 ; 0,5 ; 0,8."
+        },
+
+        {
+            q: "2,75 + 1,25 = ...",
+            options: [
+                "3,00",
+                "4,00",
+                "4,25",
+                "3,75"
+            ],
+            answer: 1,
+            explanation:
+                "2,75 + 1,25 = 4,00."
+        },
+
+        {
+            q: "5,50 − 2,25 = ...",
+            options: [
+                "2,25",
+                "3,25",
+                "3,75",
+                "4,25"
+            ],
+            answer: 1,
+            explanation:
+                "5,50 − 2,25 = 3,25."
+        },
+
+        {
+            q: "1,35 + 2,40 = ...",
+            options: [
+                "3,65",
+                "3,75",
+                "3,85",
+                "4,75"
+            ],
+            answer: 1,
+            explanation:
+                "1,35 + 2,40 = 3,75."
+        },
+
+        {
+            q: "Urutan dari terbesar ke terkecil adalah...",
+            options: [
+                "1,2 ; 1,5 ; 1,8",
+                "1,5 ; 1,8 ; 1,2",
+                "1,8 ; 1,5 ; 1,2",
+                "1,2 ; 1,8 ; 1,5"
+            ],
+            answer: 2,
+            explanation:
+                "Urutan terbesar ke terkecil adalah 1,8 ; 1,5 ; 1,2."
+        }
+    ],
+
+    4: [
+        {
+            q: "0,5 × 4 = ...",
+            options: [
+                "1",
+                "2",
+                "2,5",
+                "4,5"
+            ],
+            answer: 1,
+            explanation:
+                "0,5 × 4 = 2."
+        },
+
+        {
+            q: "2,4 ÷ 2 = ...",
+            options: [
+                "1,2",
+                "1,4",
+                "2,2",
+                "4,8"
+            ],
+            answer: 0,
+            explanation:
+                "2,4 dibagi 2 = 1,2."
+        },
+
+        {
+            q: "Ibu membeli 2,5 kg gula dan 1,75 kg tepung. Jumlah seluruhnya adalah...",
+            options: [
+                "3,25 kg",
+                "4,25 kg",
+                "4,50 kg",
+                "5,25 kg"
+            ],
+            answer: 1,
+            explanation:
+                "2,5 + 1,75 = 4,25 kg."
+        },
+
+        {
+            q: "Sebuah tali panjangnya 5,5 meter. Dipotong 2,25 meter. Sisa tali adalah...",
+            options: [
+                "2,25 m",
+                "3,00 m",
+                "3,25 m",
+                "3,75 m"
+            ],
+            answer: 2,
+            explanation:
+                "5,50 − 2,25 = 3,25 meter."
+        },
+
+        {
+            q: "Satu botol berisi 0,75 liter air. Jika ada 4 botol, jumlah air adalah...",
+            options: [
+                "2 liter",
+                "2,5 liter",
+                "3 liter",
+                "3,5 liter"
+            ],
+            answer: 2,
+            explanation:
+                "0,75 × 4 = 3 liter."
+        }
+    ],
+
+    5: [
+        {
+            q: "Andi berjalan 1,25 km pada pagi hari dan 2,75 km sore hari. Total jaraknya...",
+            options: [
+                "3 km",
+                "3,5 km",
+                "4 km",
+                "4,5 km"
+            ],
+            answer: 2,
+            explanation:
+                "1,25 + 2,75 = 4 km."
+        },
+
+        {
+            q: "Bilangan terbesar dari 0,65 ; 0,56 ; 0,605 adalah...",
+            options: [
+                "0,56",
+                "0,605",
+                "0,65",
+                "semuanya sama"
+            ],
+            answer: 2,
+            explanation:
+                "0,650 lebih besar daripada 0,605 dan 0,560."
+        },
+
+        {
+            q: "3,5 − 1,75 + 0,5 = ...",
+            options: [
+                "1,75",
+                "2,00",
+                "2,25",
+                "2,75"
+            ],
+            answer: 2,
+            explanation:
+                "3,5 − 1,75 = 1,75. Kemudian 1,75 + 0,5 = 2,25."
+        },
+
+        {
+            q: "Harga sebuah buku Rp12.500. Rani memiliki Rp20.000. Sisa uang Rani adalah...",
+            options: [
+                "Rp6.500",
+                "Rp7.000",
+                "Rp7.500",
+                "Rp8.500"
+            ],
+            answer: 2,
+            explanation:
+                "Rp20.000 − Rp12.500 = Rp7.500."
+        },
+
+        {
+            q: "Sebuah pita panjangnya 6 meter. Digunakan 2,5 meter dan 1,25 meter. Sisa pita adalah...",
+            options: [
+                "2,00 m",
+                "2,25 m",
+                "2,50 m",
+                "3,25 m"
+            ],
+            answer: 1,
+            explanation:
+                "6 − 2,5 − 1,25 = 2,25 meter."
+        }
+    ]
+};
+
+
+/* =========================================================
+   STATE GAME
+========================================================= */
+
+let playerName = "";
+let currentLevel = 1;
+let currentQuestionIndex = 0;
+
+let score = 0;
+let lives = 3;
+let streak = 0;
+let correctAnswers = 0;
+
+let timer = 30;
+let timerInterval = null;
+
+let gameQuestions = [];
+
+let soundOn = true;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const screens = document.querySelectorAll(".screen");
+
+const soundBtn = document.getElementById("soundBtn");
+
+const startBtn = document.getElementById("startBtn");
+const learnBtn = document.getElementById("learnBtn");
+const howBtn = document.getElementById("howBtn");
+
+const playerNameInput = document.getElementById("playerName");
+const continueNameBtn = document.getElementById("continueNameBtn");
+const backHomeBtn = document.getElementById("backHomeBtn");
+
+const backFromHowBtn = document.getElementById("backFromHowBtn");
+const backFromLearnBtn = document.getElementById("backFromLearnBtn");
+
+const welcomeName = document.getElementById("welcomeName");
+
+const levelButtons = document.querySelectorAll(".level");
+
+const livesEl = document.getElementById("lives");
+const scoreEl = document.getElementById("score");
+const streakEl = document.getElementById("streak");
+const timerEl = document.getElementById("timer");
+
+const progressBar = document.getElementById("progressBar");
+
+const levelBadge = document.getElementById("levelBadge");
+const questionNumber = document.getElementById("questionNumber");
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+
+const feedbackEl = document.getElementById("feedback");
+const feedbackTitle = document.getElementById("feedbackTitle");
+const feedbackText = document.getElementById("feedbackText");
+
+const nextArea = document.getElementById("nextArea");
+const nextBtn = document.getElementById("nextBtn");
+
+const finalScore = document.getElementById("finalScore");
+const correctResult = document.getElementById("correctResult");
+const accuracyResult = document.getElementById("accuracyResult");
+const levelResult = document.getElementById("levelResult");
+const playerResult = document.getElementById("playerResult");
+const resultMessage = document.getElementById("resultMessage");
+
+const reflectionBtn = document.getElementById("reflectionBtn");
+const levelsAgainBtn = document.getElementById("levelsAgainBtn");
+const homeAgainBtn = document.getElementById("homeAgainBtn");
+const reflectionDoneBtn = document.getElementById("reflectionDoneBtn");
+
+
+/* =========================================================
+   SCREEN FUNCTION
+========================================================= */
+
+function showScreen(id) {
+
+    screens.forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   SOUND
+========================================================= */
+
+function beep(type) {
+
+    if (!soundOn) return;
+
+    try {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) return;
+
+        const ctx = new AudioContext();
+
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === "correct") {
+            oscillator.frequency.value = 700;
+        } else if (type === "wrong") {
+            oscillator.frequency.value = 220;
+        } else {
+            oscillator.frequency.value = 500;
+        }
+
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+
+        oscillator.start();
+
+        oscillator.stop(ctx.currentTime + 0.12);
+
+    } catch (error) {
+        // Game tetap berjalan tanpa suara.
+    }
+}
+
+soundBtn.addEventListener("click", () => {
+
+    soundOn = !soundOn;
+
+    soundBtn.textContent = soundOn
+        ? "🔊"
+        : "🔇";
+});
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+startBtn.addEventListener("click", () => {
+    showScreen("nameScreen");
+    playerNameInput.focus();
+});
+
+learnBtn.addEventListener("click", () => {
+    showScreen("learnScreen");
+});
+
+howBtn.addEventListener("click", () => {
+    showScreen("howScreen");
+});
+
+backHomeBtn.addEventListener("click", () => {
+    showScreen("homeScreen");
+});
+
+backFromHowBtn.addEventListener("click", () => {
+    showScreen("homeScreen");
+});
+
+backFromLearnBtn.addEventListener("click", () => {
+    showScreen("homeScreen");
+});
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+continueNameBtn.addEventListener("click", () => {
+
+    const name = playerNameInput.value.trim();
+
+    if (!name) {
+
+        playerNameInput.style.borderColor = "#dc2626";
+
+        playerNameInput.placeholder =
+            "Nama harus diisi terlebih dahulu!";
+
+        return;
+    }
+
+    playerName = name;
+
+    welcomeName.textContent = playerName;
+
+    showScreen("levelScreen");
+});
+
+
+/* =========================================================
+   LEVEL SELECTION
+========================================================= */
+
+levelButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const level = Number(button.dataset.level);
+
+        if (level > 1) {
+
+            const previousLevel = localStorage.getItem(
+                "pecahanLevel"
+            );
+
+            const unlocked =
+                previousLevel &&
+                Number(previousLevel) >= level;
+
+            if (!unlocked) {
+
+                alert(
+                    "🔒 Level ini masih terkunci.\n\n" +
+                    "Selesaikan level sebelumnya terlebih dahulu."
+                );
+
+                return;
+            }
+        }
+
+        startLevel(level);
+    });
+
+});
+
+
+/* =========================================================
+   START LEVEL
+========================================================= */
+
+function startLevel(level) {
+
+    clearInterval(timerInterval);
+
+    currentLevel = level;
+    currentQuestionIndex = 0;
+
+    lives = 3;
+    streak = 0;
+    correctAnswers = 0;
+
+    gameQuestions =
+        shuffle([...questionBank[level]]);
+
+    score = 0;
+
+    updateStats();
+
+    showScreen("gameScreen");
+
+    loadQuestion();
+}
+
+
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
+
+function loadQuestion() {
+
+    clearInterval(timerInterval);
+
+    const q = gameQuestions[currentQuestionIndex];
+
+    if (!q) {
+
+        finishLevel();
+
+        return;
+    }
+
+    questionNumber.textContent =
+        `Soal ${currentQuestionIndex + 1} dari ${gameQuestions.length}`;
+
+    levelBadge.textContent =
+        `LEVEL ${currentLevel}`;
+
+    questionEl.textContent = q.q;
+
+    answersEl.innerHTML = "";
+
+    feedbackEl.className = "feedback";
+
+    nextArea.classList.remove("show");
+
+    q.options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+
+        button.className = "answer";
+
+        button.textContent =
+            `${String.fromCharCode(65 + index)}. ${option}`;
+
+        button.addEventListener("click", () => {
+
+            answerQuestion(index, button);
+
+        });
+
+        answersEl.appendChild(button);
+
+    });
+
+    const progress =
+        (currentQuestionIndex / gameQuestions.length) * 100;
+
+    progressBar.style.width =
+        `${progress}%`;
+
+    startTimer();
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer() {
+
+    timer = 30;
+
+    timerEl.textContent = timer;
+
+    timerInterval = setInterval(() => {
+
+        timer--;
+
+        timerEl.textContent = timer;
+
+        if (timer <= 5) {
+            beep("tick");
+        }
+
+        if (timer <= 0) {
+
+            clearInterval(timerInterval);
+
+            timeUp();
+        }
+
+    }, 1000);
+}
+
+
+/* =========================================================
+   TIME UP
+========================================================= */
+
+function timeUp() {
+
+    const q = gameQuestions[currentQuestionIndex];
+
+    const buttons =
+        answersEl.querySelectorAll(".answer");
+
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    buttons[q.answer].classList.add("correct");
+
+    lives--;
+
+    streak = 0;
+
+    updateStats();
+
+    feedbackEl.className =
+        "feedback show wrong";
+
+    feedbackTitle.textContent =
+        "⏰ Waktu Habis!";
+
+    feedbackText.innerHTML =
+        `<strong>Jawaban benar:</strong>
+         ${q.options[q.answer]}<br><br>
+         ${q.explanation}`;
+
+    beep("wrong");
+
+    nextArea.classList.add("show");
+
+    checkGameOver();
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function answerQuestion(selectedIndex, selectedButton) {
+
+    clearInterval(timerInterval);
+
+    const q = gameQuestions[currentQuestionIndex];
+
+    const buttons =
+        answersEl.querySelectorAll(".answer");
+
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    if (selectedIndex === q.answer) {
+
+        selectedButton.classList.add("correct");
+
+        correctAnswers++;
+
+        streak++;
+
+        score += 100;
+
+        if (streak >= 3) {
+
+            score += 50;
+
+            feedbackText.innerHTML =
+                `<strong>+150 poin!</strong><br><br>
+                 ${q.explanation}<br><br>
+                 🔥 Bonus streak +50!`;
+
+        } else {
+
+            feedbackText.innerHTML =
+                `<strong>+100 poin!</strong><br><br>
+                 ${q.explanation}`;
+        }
+
+        feedbackEl.className =
+            "feedback show correct";
+
+        feedbackTitle.textContent =
+            "🎉 BENAR!";
+
+        beep("correct");
+
+        createConfetti();
+
+    } else {
+
+        selectedButton.classList.add("wrong");
+
+        buttons[q.answer].classList.add("correct");
+
+        lives--;
+
+        streak = 0;
+
+        feedbackEl.className =
+            "feedback show wrong";
+
+        feedbackTitle.textContent =
+            "💡 BELUM TEPAT";
+
+        feedbackText.innerHTML =
+            `<strong>Jawaban benar:</strong>
+             ${q.options[q.answer]}<br><br>
+             ${q.explanation}`;
+
+        beep("wrong");
+    }
+
+    updateStats();
+
+    nextArea.classList.add("show");
+
+    checkGameOver();
+}
+
+
+/* =========================================================
+   CHECK GAME OVER
+========================================================= */
+
+function checkGameOver() {
+
+    if (lives <= 0) {
+
+        setTimeout(() => {
+
+            clearInterval(timerInterval);
+
+            alert(
+                "❤️ Nyawamu habis.\n\n" +
+                "Jangan menyerah! Coba lagi dan pelajari pembahasannya."
+            );
+
+            startLevel(currentLevel);
+
+        }, 500);
+    }
+}
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+nextBtn.addEventListener("click", () => {
+
+    if (lives <= 0) return;
+
+    currentQuestionIndex++;
+
+    loadQuestion();
+});
+
+
+/* =========================================================
+   FINISH LEVEL
+========================================================= */
+
+function finishLevel() {
+
+    clearInterval(timerInterval);
+
+    progressBar.style.width = "100%";
+
+    const total =
+        gameQuestions.length;
+
+    const accuracy =
+        Math.round((correctAnswers / total) * 100);
+
+    const passed =
+        correctAnswers >= 4;
+
+    if (passed && currentLevel < 5) {
+
+        localStorage.setItem(
+            "pecahanLevel",
+            currentLevel + 1
+        );
+    }
+
+    finalScore.textContent =
+        score.toLocaleString("id-ID");
+
+    correctResult.textContent =
+        `${correctAnswers}/${total}`;
+
+    accuracyResult.textContent =
+        `${accuracy}%`;
+
+    levelResult.textContent =
+        currentLevel;
+
+    playerResult.textContent =
+        playerName;
+
+    if (passed) {
+
+        resultMessage.innerHTML =
+            `🌟 <strong>Level berhasil ditaklukkan!</strong><br>
+             Kamu mendapatkan ${accuracy}% jawaban benar.`;
+
+        if (currentLevel === 5) {
+
+            resultMessage.innerHTML +=
+                `<br><br>🏆 Kamu telah menyelesaikan seluruh petualangan!`;
+        }
+
+    } else {
+
+        resultMessage.innerHTML =
+            `💪 Kamu belum mencapai target 4 jawaban benar.
+             Jangan menyerah, coba lagi!`;
+    }
+
+    showScreen("resultScreen");
+}
+
+
+/* =========================================================
+   UPDATE STATS
+========================================================= */
+
+function updateStats() {
+
+    livesEl.textContent = lives;
+
+    scoreEl.textContent =
+        score.toLocaleString("id-ID");
+
+    streakEl.textContent =
+        streak;
+}
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array) {
+
+    for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(Math.random() * (i + 1));
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+    }
+
+    return array;
+}
+
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+function createConfetti() {
+
+    for (let i = 0; i < 18; i++) {
+
+        const piece =
+            document.createElement("div");
+
+        piece.className = "confetti";
+
+        piece.style.left =
+            Math.random() * 100 + "%";
+
+        piece.style.background =
+            [
+                "#4f46e5",
+                "#06b6d4",
+                "#16a34a",
+                "#f59e0b",
+                "#dc2626"
+            ][
+                Math.floor(Math.random() * 5)
+            ];
+
+        piece.style.animationDuration =
+            (1 + Math.random()) + "s";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => {
+            piece.remove();
+        }, 2200);
+    }
+}
+
+
+/* =========================================================
+   RESULT BUTTONS
+========================================================= */
+
+reflectionBtn.addEventListener("click", () => {
+
+    showScreen("reflectionScreen");
+
+});
+
+
+levelsAgainBtn.addEventListener("click", () => {
+
+    updateLevelLocks();
+
+    showScreen("levelScreen");
+
+});
+
+
+homeAgainBtn.addEventListener("click", () => {
+
+    showScreen("homeScreen");
+
+});
+
+
+/* =========================================================
+   REFLECTION
+========================================================= */
+
+document
+    .querySelectorAll(".reflection")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            button.classList.toggle("selected");
+
+        });
+
+    });
+
+
+reflectionDoneBtn.addEventListener("click", () => {
+
+    alert(
+        "👏 Terima kasih sudah melakukan refleksi!\n\n" +
+        "Terus berlatih agar semakin jago matematika."
+    );
+
+    showScreen("homeScreen");
+
+});
+
+
+/* =========================================================
+   UPDATE LEVEL LOCKS
+========================================================= */
+
+function updateLevelLocks() {
+
+    const savedLevel =
+        Number(
+            localStorage.getItem("pecahanLevel") || 1
+        );
+
+    levelButtons.forEach(button => {
+
+        const level =
+            Number(button.dataset.level);
+
+        const status =
+            button.querySelector(".level-status");
+
+        if (level <= savedLevel) {
+
+            button.classList.remove("locked");
+
+            status.textContent = "🔓";
+
+        } else {
+
+            button.classList.add("locked");
+
+            status.textContent = "🔒";
+        }
+    });
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+updateLevelLocks();
+
+</script>
+
+</body>
+</html>
